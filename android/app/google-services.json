@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "37228435316",
+    "project_id": "controlpanel-4e4af",
+    "storage_bucket": "controlpanel-4e4af.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37228435316:android:98c35260c18bbe4d0abe21",
+        "android_client_info": {
+          "package_name": "com.controlpanel.control_panel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "37228435316-2fpfpsvn78tu0kchglrvqi8ck0orosdt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnxEUaNPRXjZQzntojOoSLudVEK4Fy_ts"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "37228435316-2fpfpsvn78tu0kchglrvqi8ck0orosdt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

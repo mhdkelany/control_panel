@@ -1,0 +1,12 @@
+const GET_ALL_BILL='all_bill_approve.php';
+const GET_ALL_PRODUCT='all_pro.php';
+const GET_BILL_DETAILS='all_bills_details.php';
+const GET_ALL_USERS='all_users.php';
+const GET_PERCENT='percent_pro.php';
+const CHANGE_USER_STATUS='update_state_user.php';
+const choicePhoto='add_photo.php';
+const ADD_TOKEN='add_token_mobile.php';
+const GET_WISH='all_wish.php';
+const UPDATE_WISH_STATE='u_d_wish.php';
+const UPDATE_BILL_STATE='u_d_bill.php';
+const UPDATE_PRODUCT_STATE='state_pro.php';
