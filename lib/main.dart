@@ -23,7 +23,7 @@ FirebaseMessaging.onMessageOpenedApp.listen((event) {
   print(event.notification);
   if(event.notification!.body!=null)
     {
-      
+      print('hello');
     }
 });
   runApp(const MyApp());
