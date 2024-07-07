@@ -5,6 +5,7 @@ import 'package:control_panel/shared/components/components.dart';
 import 'package:control_panel/shared/style/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 
 class GetStartedScreen extends StatelessWidget {
   const GetStartedScreen({Key? key}) : super(key: key);
@@ -30,31 +31,25 @@ class GetStartedScreen extends StatelessWidget {
           textDirection: TextDirection.rtl,
           child: Scaffold(
             backgroundColor: Colors.white,
-            body: Center(
+            body: Padding(
+              padding: const EdgeInsets.all(15.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const Image(
-                        image: AssetImage('assets/images/start.png'),
-                        fit: BoxFit.cover,
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-
+                      Lottie.asset('assets/lottie/get2.json' ),
                       Text(
                           'اهلاً وسهلاً بك في لوحة التحكم',
-                          style: Theme.of(context).textTheme.caption!.copyWith(
+                          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               fontSize: 16
                           )
                       ),
 
                      // Spacer(),
                       SizedBox(
-                        height: 60,
+                        height: 30,
                       ),
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 50),

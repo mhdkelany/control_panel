@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:control_panel/layout/cubit/cubit.dart';
 import 'package:control_panel/layout/cubit/states.dart';
@@ -8,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
-  const OrderDetailsScreen({Key? key}) : super(key: key);
-
+   OrderDetailsScreen({Key? key}) : super(key: key);
+  var scaffoldKey=GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -41,7 +42,7 @@ class OrderDetailsScreen extends StatelessWidget {
                       width: 5,
                     ),
                     Text(
-                      '${ControlPanelCubit.get(context).totalPrice} د.أ',
+                      '${ControlPanelCubit.get(context).totalPrice.toStringAsFixed(2)} د.أ',
                       style: TextStyle(
                         color: primaryColor,
                         fontSize: 20,
@@ -58,137 +59,256 @@ class OrderDetailsScreen extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: ListView.separated(
-                        itemBuilder: (context,index)=>Container(
-                          color: Colors.white,
-                          child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Row(
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'اسم المنتج :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 18.0
+                        itemBuilder: (context,index)=>InkWell(
+                          onTap: ()
+                          {
+                            showModalBottomSheet(shape:RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20))) ,context: context, builder: (context)=>Directionality(
+                              textDirection: TextDirection.rtl,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: CachedNetworkImage(
+                                          imageUrl:'https://ibrahim-store.com/api2/images/${ControlPanelCubit.get(context).billDetailsModel!.details[index].img}',
+                                          imageBuilder: (context,imageProvider)=>Container(
+                                            child: Image(
+                                              image: imageProvider,
+                                              fit: BoxFit.cover,
+                                              height:300 ,
+                                            ),
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(15)
+                                            ),
+                                            clipBehavior: Clip.antiAlias,
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          '${ControlPanelCubit.get(context).billDetailsModel!.details[index].productName}',
-                                          style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 16),
-                                        )
-                                      ],
+                                          placeholder: (context,url)=>Container(
+                                              height:300,child: Center(child: CircularProgressIndicator())),
+                                          errorWidget: (context,url,error)=>Container(
+                                            height: 300,
+                                            color: Colors.grey[300],
+                                            child: Icon(
+                                              Icons.refresh_outlined,
+                                              color: Colors.grey,
                                     ),
-                                    SizedBox(
-                                      height: 7,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'السعر :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 18.0
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          '${ControlPanelCubit.get(context).billDetailsModel!.details[index].price} د.أ',
-                                          style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 16),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 7,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'الكمية :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 18.0
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          '${ControlPanelCubit.get(context).billDetailsModel!.details[index].quantity}',
-                                          style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 16),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 7,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text('صاحب المنتج :',style: TextStyle(
-                                          fontSize: 18
-                                        ),),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          '${ControlPanelCubit.get(context).billDetailsModel!.details[index].productOwnerName}',
-                                          style: Theme.of(context).textTheme.caption!.copyWith(fontSize: 16),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 7,
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text('الرقم :',style: TextStyle(fontSize: 18),),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          '${ControlPanelCubit.get(context).billDetailsModel!.details[index].productOwnerPhone}',
-                                          style: TextStyle(
-                                              color: primaryColor
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                      height: MediaQuery.of(context).size.height*0.05,
-                                      child: TextButton(
-                                          onPressed: ()
-                                          {
-                                            ControlPanelCubit.get(context).lat=double.tryParse(ControlPanelCubit.get(context).billDetailsModel!.details[index].productOwnerLat!);
-                                            ControlPanelCubit.get(context).lng=double.tryParse(ControlPanelCubit.get(context).billDetailsModel!.details[index].productOwnerLng!);
-                                            ControlPanelCubit.get(context).initialMap();
-                                            navigateTo(context, MapScreen());
-                                          },
-                                          child: Text('اضغط هنا لرؤية الموقع')
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Spacer(),
-                                Expanded(
-                                  child: Text(
-                                    '${ControlPanelCubit.get(context).billDetailsModel!.details[index].sumPrice} د.أ',
-                                    style: TextStyle(
-                                      color: primaryColor,
-                                      fontSize: 20,
-                                      fontFamily: 'tajawal-bold',
-                                    ),
-                                    maxLines: 1,
                                   ),
                                 )
-                              ],
+
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Expanded(
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'الوصف :',
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontFamily: 'tajawal-light',
+                                                        fontSize: 14
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Expanded(
+                                                    child: Text(
+                                                      '${ControlPanelCubit.get(context).billDetailsModel!.details[index].shortDescription}',
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontFamily: 'tajawal-light',
+                                                          fontSize: 14
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              Row(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'الوصف 2 :',
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontFamily: 'tajawal-light',
+                                                        fontSize: 14
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Expanded(
+                                                    child: Text(
+                                                      '${ControlPanelCubit.get(context).billDetailsModel!.details[index].longDescription}',
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontFamily: 'tajawal-light',
+                                                          fontSize: 14
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+
+                                            ],
+                                            mainAxisSize: MainAxisSize.min,
+                                          )
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ));
+                          },
+                          child: Container(
+                            color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: 3,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              flex:0,
+                                              child: Text(
+                                                'اسم المنتج :',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18.0
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 1,
+                                              child: Text(
+                                                '${ControlPanelCubit.get(context).billDetailsModel!.details[index].productName}',
+                                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                                maxLines: 3,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 7,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'السعر :',
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 18.0
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Text(
+                                              '${double.tryParse(ControlPanelCubit.get(context).billDetailsModel!.details[index].price!)!.toStringAsFixed(2)} د.أ',
+                                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                            )
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 7,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'الكمية :',
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 18.0
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Text(
+                                              '${ControlPanelCubit.get(context).billDetailsModel!.details[index].quantity}',
+                                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                            )
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 7,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text('صاحب المنتج :',style: TextStyle(
+                                              fontSize: 18
+                                            ),),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Text(
+                                              '${ControlPanelCubit.get(context).billDetailsModel!.details[index].productOwnerName}',
+                                              style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
+                                            )
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 7,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text('الرقم :',style: TextStyle(fontSize: 18),),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Text(
+                                              '${ControlPanelCubit.get(context).billDetailsModel!.details[index].productOwnerPhone}',
+                                              style: TextStyle(
+                                                  color: primaryColor
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          height: MediaQuery.of(context).size.height*0.05,
+                                          child: TextButton(
+                                              onPressed: ()
+                                              {
+                                                ControlPanelCubit.get(context).lat=double.tryParse(ControlPanelCubit.get(context).billDetailsModel!.details[index].productOwnerLat!);
+                                                ControlPanelCubit.get(context).lng=double.tryParse(ControlPanelCubit.get(context).billDetailsModel!.details[index].productOwnerLng!);
+                                                ControlPanelCubit.get(context).initialMap();
+                                                navigateTo(context, MapScreen());
+                                              },
+                                              child: Text('اضغط هنا لرؤية الموقع')
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  //Spacer(),
+                                  Expanded(
+                                    child: Text(
+                                      '${double.tryParse(ControlPanelCubit.get(context).billDetailsModel!.details[index].sumPrice!)!.toStringAsFixed(2)} د.أ',
+                                      style: TextStyle(
+                                        color: primaryColor,
+                                        fontSize: 20,
+                                        fontFamily: 'tajawal-bold',
+                                      ),
+                                      maxLines: 1,
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -256,14 +376,14 @@ class OrderDetailsScreen extends StatelessWidget {
                                           height: 5,
                                         ),
                                         Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Icon(Icons.location_on,color: Colors.grey,size: 20,),
                                             SizedBox(
                                               width: 5,
                                             ),
                                             if(ControlPanelCubit.get(context).placeOwnerBill!=null)
-                                              Container(
-                                                width: MediaQuery.of(context).size.width*0.40,
+                                              Expanded(
                                                 child: Text(
                                                   '${ControlPanelCubit.get(context).placeOwnerBill!.locality!}, ${ControlPanelCubit.get(context).placeOwnerBill!.street!},${ControlPanelCubit.get(context).placeOwnerBill!.postalCode!},${ControlPanelCubit.get(context).placeOwnerBill!.subLocality!}',
                                                   style: TextStyle(

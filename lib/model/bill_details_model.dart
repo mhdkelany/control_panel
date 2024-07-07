@@ -12,6 +12,9 @@ class Details
 {
   String? idUser;
   String? idBill;
+  String? img;
+  String? longDescription;
+  String? shortDescription;
   String? date;
   String? productOwnerName;
   String? productOwnerPhone;
@@ -46,5 +49,8 @@ class Details
     quantity=json['quantity'];
     price=json['price'];
     sumPrice=json['sum'];
+    shortDescription=json['short_description'];
+    longDescription=json['long_description'];
+    img=json['img'];
   }
 }

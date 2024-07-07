@@ -24,7 +24,7 @@ class ProductDetailsScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child:CachedNetworkImage(
-                    imageUrl:'https://ibrahim-store.com/api/images/${ControlPanelCubit.get(context).productModel!.information[index].image}',
+                    imageUrl:'https://ibrahim-store.com/api2/images/${ControlPanelCubit.get(context).productModel!.information[index].image}',
                     imageBuilder: (context,imageProvider)=>Image(
                       width: double.infinity,
                       image: imageProvider,
@@ -62,18 +62,18 @@ class ProductDetailsScreen extends StatelessWidget {
                                   child: Text(
                                     '${ControlPanelCubit.get(context).productModel!.information[index].productName}',
                                     style: TextStyle(
-                                        fontSize: 18
+                                        fontSize: 14
                                     ),
-                                    maxLines: 1,
+                                    maxLines: 3,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                                Spacer(),
+                               // Spacer(),
                                 Text(
-                                  '${ControlPanelCubit.get(context).productModel!.information[index].price} د.أ',
+                                  '${double.tryParse(ControlPanelCubit.get(context).productModel!.information[index].price!)!.toStringAsFixed(2)} د.أ',
                                   style: TextStyle(
                                       color: primaryColor,
-                                      fontSize: 25,
+                                      fontSize: 16,
                                       fontFamily: 'tajawal-bold'
                                   ),
                                 )
@@ -104,7 +104,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                   child: Text(
                                     '${ControlPanelCubit.get(context).productModel!.information[index].shortDescription}',
                                     style: TextStyle(
-                                        fontSize: 18
+                                        fontSize: 14
                                     ),
                                   ),
                                 )
@@ -134,7 +134,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                 animationCurve: Curves.slowMiddle,
                                 maxLines: 2,
                                 linkColor: primaryColor,
-                                style: Theme.of(context).textTheme.caption!.copyWith(
+                                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                   fontSize: 16,
                                 )
                             ),

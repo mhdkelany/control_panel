@@ -16,6 +16,7 @@ import 'package:control_panel/shared/network/end_point/end_point.dart';
 import 'package:control_panel/shared/network/local/cache_helper/cache_helper.dart';
 import 'package:control_panel/shared/network/remote/dio_helper/dio_helper.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart'as http;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,6 +42,7 @@ class ControlPanelCubit extends Cubit<ControlPanelStates>
             }
           },
         );
+
   }
   @override
   Future<void> close() {
@@ -50,9 +52,7 @@ class ControlPanelCubit extends Cubit<ControlPanelStates>
 
   static ControlPanelCubit get(context)=>BlocProvider.of(context);
   AllBillModel ?allBillModel;
-  Map<int,bool>isWish={};
-  Map<int,bool>isProduct={};
-  Map<int,bool>isOrder={};
+
   void getOrders()async
   {
     if(await checkConnection()) {
@@ -92,6 +92,7 @@ class ControlPanelCubit extends Cubit<ControlPanelStates>
         getAddressForOwnerProduct(
             double.tryParse(billDetailsModel!.details[0].productOwnerLat!)!,
             double.tryParse(billDetailsModel!.details[0].productOwnerLng!)!);
+        print(value.data);
         emit(GetBillDetailsSuccessState());
       }).catchError((error) {
         print(error.toString());
@@ -228,32 +229,32 @@ class ControlPanelCubit extends Cubit<ControlPanelStates>
       emit(ChoiceImageErrorState());
     }
   }
-   insert(File bath)async
-  {
-  var request= await http.MultipartRequest("POST",Uri.parse('http://192.168.1.127:80/store/add_photo.php'));
-  var length=await bath.length();
-  var multiPartFile=http.MultipartFile("image",http.ByteStream(bath.openRead()),length,filename:bath.path.split('/').last );
-  request.files.add(multiPartFile);
-  var myRequest=await request.send();
-  var response=await http.Response.fromStream(myRequest);
-  if(myRequest.statusCode==200)
-    {
-      return jsonDecode(response.body);
-    }else
-      {
-
-      }
-    // DioHelper.postData(url: choicePhoto
-    //     ,
-    //     data: {
-    //   'image':jsonEncode(bath)
-    //     }).then((value) {
-    //       emit(PhotoSuccessSuccessState());
-    // }).catchError((error){
-    //   print(error.toString());
-    //   emit(PhotoSuccessErrorState());
-    // });
-  }
+  //  insert(File bath)async
+  // {
+  // var request= await http.MultipartRequest("POST",Uri.parse('http://192.168.1.127:80/store/add_photo.php'));
+  // var length=await bath.length();
+  // var multiPartFile=http.MultipartFile("image",http.ByteStream(bath.openRead()),length,filename:bath.path.split('/').last );
+  // request.files.add(multiPartFile);
+  // var myRequest=await request.send();
+  // var response=await http.Response.fromStream(myRequest);
+  // if(myRequest.statusCode==200)
+  //   {
+  //     return jsonDecode(response.body);
+  //   }else
+  //     {
+  //
+  //     }
+  //   // DioHelper.postData(url: choicePhoto
+  //   //     ,
+  //   //     data: {
+  //   //   'image':jsonEncode(bath)
+  //   //     }).then((value) {
+  //   //       emit(PhotoSuccessSuccessState());
+  //   // }).catchError((error){
+  //   //   print(error.toString());
+  //   //   emit(PhotoSuccessErrorState());
+  //   // });
+  // }
   void getStarted()async
   {
     if(await checkConnection()) {
@@ -344,6 +345,12 @@ class ControlPanelCubit extends Cubit<ControlPanelStates>
       }
   }
 
+  bool deleted=false;
+  void changeDeleted(bool isDelete)
+  {
+    deleted=isDelete;
+  }
+
   void changeStateForProduct(bool isDelete,int id,{double ?percent})async
   {
     emit(ChangeStatusProductLoadingState());
@@ -378,7 +385,7 @@ class ControlPanelCubit extends Cubit<ControlPanelStates>
           url: GET_ALL_PRODUCT
       ).then((value) {
         productModel = ProductModel.fromJson(value.data);
-        print(value.data);
+        print('${productModel!.information.length} 334');
         emit(GetProductSuccessState());
       }).catchError((error) {
         print(error.toString());
@@ -406,5 +413,121 @@ class ControlPanelCubit extends Cubit<ControlPanelStates>
       {
         emit(CheckSocketState());
       }
+  }
+  AllProductsModel ?allProductsModel;
+  void getAllProducts()async
+  {
+    emit(GetAllProductLoadingState());
+    if(await checkConnection()) {
+      DioHelper.getData(
+          url: GET_ALL_PRODUCTS
+      ).then((value) {
+        allProductsModel=AllProductsModel.fromJson(value.data);
+        print(value.data);
+        emit(GetAllProductSuccessState());
+      });
+    }
+    else
+      {
+        emit(CheckSocketState());
+      }
+  }
+  void deleteProduct(int id)async
+  {
+    if(await checkConnection())
+      {
+        emit(GetDeleteProductLoadingState());
+        DioHelper.putData(
+            url: DELETE_PRODUCT,
+            data:{
+              'id_pro':id
+            }
+        ).then((value) {
+          getAllProducts();
+          emit(GetDeleteProductSuccessState());
+        }).catchError((error){
+          emit(GetDeleteProductErrorState());
+        });
+      }
+  }
+  // change product before change state
+   changeProduct(File? path,Map data,context)async
+  {
+    if(await checkConnection()) {
+      try {
+        emit(ChangeProductLoadingState());
+        var request = await http.MultipartRequest(
+            "POST",
+            Uri.parse('https://ibrahim-store.com/api2/update_pro_before.php'));
+        if(path!=null) {
+          var length = await path.length();
+          var multiPartFile = http.MultipartFile(
+              "image", http.ByteStream(path.openRead()), length,
+              filename: path.path
+                  .split('/')
+                  .last);
+          request.files.add(multiPartFile);
+        }
+        request.fields['name'] = data['name'];
+        request.fields['short_description'] = data['shortDescription'];
+        request.fields['long_description'] = data['longDescription'];
+        request.fields['price'] = data['price'];
+        request.fields['quantity'] = data['quantity'];
+        request.fields['id_pro'] = data['idProduct'];
+        request.fields['state'] = data['status'];
+        var myRequest = await request.send();
+        var response = await http.Response.fromStream(myRequest);
+        if (myRequest.statusCode == 200) {
+          emit(ChangeProductSuccessState(message: jsonDecode(response.body)['message'],status:jsonDecode(response.body)['state'] ));
+          Navigator.pop(context);
+          print(response.body);
+         // print(jsonDecode(response.body));
+          getProduct();
+          return response.body;
+        } else {
+          print('sss');
+          emit(ChangeProductErrorState());
+        }
+      } catch(e)
+      {
+        emit(ChangeProductErrorState());
+        print(e.toString());
+      }
+    }
+    else
+    {
+      emit(CheckSocketState());
+    }
+  }
+  void removeImage()
+  {
+    productImage=null;
+    emit(RemoveImageState());
+  }
+  void changePercent(double percent,int idProduct,context)async
+  {
+    if(await checkConnection())
+      try {
+      emit(ChangePercentLoadingState());
+      DioHelper.postData(
+            url: CHANGE_PERCENT,
+            data:
+            {
+              'percent': percent,
+              'id_pro': idProduct
+            }
+        ).then((value) {
+          Navigator.pop(context);
+          getAllProducts();
+          emit(ChangePercentSuccessState());
+        }).catchError((error){
+          emit(ChangePercentErrorState());
+        });
+      }
+    catch(e)
+    {
+      emit(ChangePercentErrorState());
+      print(e);
+    }
   }
 }

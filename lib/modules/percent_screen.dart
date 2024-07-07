@@ -45,9 +45,10 @@ class PercentScreen extends StatelessWidget {
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontFamily: 'tajawal-light',
+                                    fontSize: 14
                                   ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                                 // maxLines: 1,
+                                 // overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             ),
@@ -67,6 +68,7 @@ class PercentScreen extends StatelessWidget {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'السعر قبل النسبة:',
@@ -81,13 +83,13 @@ class PercentScreen extends StatelessWidget {
                                           ),
                                           Expanded(
                                             child: Text(
-                                              '${ControlPanelCubit.get(context).percentModel!.data[index].priceBeforePercent} د.أ',
+                                              '${double.tryParse(ControlPanelCubit.get(context).percentModel!.data[index].priceBeforePercent!)!.toStringAsFixed(2)} د.أ',
                                               style: TextStyle(
                                                   fontSize: 18,
                                                   fontFamily: 'tajawal-light',
                                                   color: Colors.red
                                               ),
-                                              maxLines: 1,
+                                              maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           )
@@ -97,6 +99,7 @@ class PercentScreen extends StatelessWidget {
                                         height: 10,
                                       ),
                                       Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'السعر بعد النسبة:',
@@ -111,13 +114,13 @@ class PercentScreen extends StatelessWidget {
                                           ),
                                           Expanded(
                                             child: Text(
-                                              '${ControlPanelCubit.get(context).percentModel!.data[index].priceAfterPercent} د.أ',
+                                              '${double.tryParse(ControlPanelCubit.get(context).percentModel!.data[index].priceAfterPercent!)!.toStringAsFixed(2)} د.أ',
                                               style: TextStyle(
                                                   fontSize: 18,
                                                   fontFamily: 'tajawal-light',
                                                   color: Colors.green
                                               ),
-                                              maxLines: 1,
+                                              maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           )

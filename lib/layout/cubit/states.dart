@@ -46,6 +46,8 @@ class ChangeStatusWishErrorState extends ControlPanelStates{}
 class ChangeStatusProductLoadingState extends ControlPanelStates{}
 class ChangeStatusProductSuccessState extends ControlPanelStates{}
 class ChangeStatusProductErrorState extends ControlPanelStates{}
+class IsDeleteState extends ControlPanelStates{}
+class IsNotDeleteState extends ControlPanelStates{}
 
 class GetProductLoadingState extends ControlPanelStates{}
 class GetProductSuccessState extends ControlPanelStates{}
@@ -55,7 +57,31 @@ class CheckSocketState extends ControlPanelStates{}
 
 class ConnectionErrorState extends ControlPanelStates{}
 class ConnectionSuccessState extends ControlPanelStates{}
+class OpenAppState extends ControlPanelStates{}
 
 class GetPercentLoadingState extends ControlPanelStates{}
 class GetPercentSuccessState extends ControlPanelStates{}
 class GetPercentErrorState extends ControlPanelStates{}
+
+class GetAllProductLoadingState extends ControlPanelStates{}
+class GetAllProductSuccessState extends ControlPanelStates{}
+class GetAllProductErrorState extends ControlPanelStates{}
+
+class GetDeleteProductLoadingState extends ControlPanelStates{}
+class GetDeleteProductSuccessState extends ControlPanelStates{}
+class GetDeleteProductErrorState extends ControlPanelStates{}
+
+class ChangeProductLoadingState extends ControlPanelStates{}
+class ChangeProductSuccessState extends ControlPanelStates{
+  final String message;
+  final bool status;
+
+  ChangeProductSuccessState({required this.message,required this.status});
+}
+class ChangeProductErrorState extends ControlPanelStates{}
+
+class RemoveImageState extends ControlPanelStates{}
+
+class ChangePercentLoadingState extends ControlPanelStates{}
+class ChangePercentSuccessState extends ControlPanelStates{}
+class ChangePercentErrorState extends ControlPanelStates{}

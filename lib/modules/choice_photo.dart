@@ -77,7 +77,7 @@ class ViewWish extends StatelessWidget {
                                   children: [
                                     Text(
                                       'الاسم: ',
-                                      style: Theme.of(context).textTheme.caption!.copyWith(
+                                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                           fontSize: 20,
                                           fontFamily: 'tajawal-bold'
                                       ),
@@ -99,7 +99,7 @@ class ViewWish extends StatelessWidget {
                                   children: [
                                     Text(
                                       'الرقم: ',
-                                      style: Theme.of(context).textTheme.caption!.copyWith(
+                                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                           fontSize: 20,
                                           fontFamily: 'tajawal-bold'
                                       ),
@@ -121,7 +121,7 @@ class ViewWish extends StatelessWidget {
                                   children: [
                                     Text(
                                       'الطلب: ',
-                                      style: Theme.of(context).textTheme.caption!.copyWith(
+                                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                           fontSize: 20,
                                           fontFamily: 'tajawal-bold'
                                       ),
@@ -140,7 +140,7 @@ class ViewWish extends StatelessWidget {
                                   children: [
                                     Text(
                                       'الموقع: ',
-                                      style: Theme.of(context).textTheme.caption!.copyWith(
+                                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                           fontSize: 20,
                                           fontFamily: 'tajawal-bold'
                                       ),

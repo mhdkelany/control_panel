@@ -5,6 +5,7 @@ import 'package:control_panel/shared/components/components.dart';
 import 'package:control_panel/shared/style/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UsersScreen extends StatelessWidget {
   const UsersScreen({Key? key}) : super(key: key);
@@ -37,7 +38,7 @@ class UsersScreen extends StatelessWidget {
                               Text(
                                 '${ControlPanelCubit.get(context).usersModel!.userInformation[index].name}',
                                 style: TextStyle(
-                                    fontSize: 18
+                                    fontSize: 14
                                 ),
                               ),
                               SizedBox(
@@ -46,22 +47,31 @@ class UsersScreen extends StatelessWidget {
                               if(ControlPanelCubit.get(context).usersModel!.userInformation[index].userType=='0')
                                 Text(
                                   'تاجر',
-                                  style: Theme.of(context).textTheme.caption,
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    fontSize: 12
+                                  ),
                                 ),
                               if(ControlPanelCubit.get(context).usersModel!.userInformation[index].userType=='1')
                                 Text(
                                   'صاحب محل',
-                                  style: Theme.of(context).textTheme.caption,
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                      fontSize: 12
+                                  )
                                 ),
                             ],
                           ),
                           SizedBox(
                             height: 5,
                           ),
-                          Text(
-                            '${ControlPanelCubit.get(context).usersModel!.userInformation[index].phone}',
-                            style: TextStyle(
-                                color: primaryColor
+                          GestureDetector(
+                            onTap: (){
+                              launchUrl(Uri.parse('tel://:${ControlPanelCubit.get(context).usersModel!.userInformation[index].phone}'));
+                            },
+                            child: Text(
+                              '${ControlPanelCubit.get(context).usersModel!.userInformation[index].phone}',
+                              style: TextStyle(
+                                  color: primaryColor
+                              ),
                             ),
                           )
                         ],
